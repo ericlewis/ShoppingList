@@ -22,9 +22,16 @@ class ListManager: ObservableObject {
     func add(_ title: String, count: Int, notes: String? = nil) {
         context.perform {
             let item = Item(context: self.context)
-            item.title = title
+            
+            if title.isEmpty && notes != nil && !notes!.isEmpty {
+               item.title = notes
+            } else {
+                item.title = title
+                item.notes = notes
+            }
+            
             item.order = Int32(count)
-            item.notes = notes
+
             try? self.context.save()
         }
     }
